@@ -1,15 +1,17 @@
 #Nile Fairfield 
 
-import os, sys, win32com.client
+import os, sys
 
-def runMacro(fpath, macro_name):
+def replace(fpath, old_str, new_str):
 	for path, subdirs, files in os.walk(fpath):
 
 		for name in files:
 			try:
-				fullname = fpath + "\\" + name
-				xl.Workbooks.Open(Filename=fullname,ReadOnly=1)
-
+				lhs, rhs = name.split(old_str, 1)
+				new_file = lhs + new_str
+				old_fullname = fpath + "\\" + name
+				new_fullname = fpath + "\\" + new_file
+			
 				os.rename(old_fullname, new_fullname)
 				print "\n\nSuccessfully renamed " + name + "\n     with " + new_file
 				#break
@@ -27,12 +29,14 @@ def runMacro(fpath, macro_name):
 print "Enter the name of the directory:"
 #Get the input for directory
 fpath_input = raw_input("> ")
-#fpath_input = "C:\Users\fairfield\Desktop\Upload\eXchangeRound4\MGU_Garmin_Round4_Export"
 
-print "Enter the name of the Excel Macro:"
+print "Enter the part of the filename you want to replace:"
 #Get the input for directory
-macro_name_input = raw_input("> ")
-#old_str_input = "RE_29_January_2015.zip"
+old_str_input = raw_input("> ")
+
+print "Enter the new string to append to the end of each filename:"
+#Get the input for directory
+new_str_input = raw_input("> ")
 
 #Run function
-runMacro(fpath_input, macro_name_input)
+replace(fpath_input, old_str_input, new_str_input)
